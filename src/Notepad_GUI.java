@@ -8,9 +8,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import javax.swing.*;
 import javax.swing.event.UndoableEditEvent;
-import javax.swing.event.UndoableEditListener;
+// import javax.swing.event.UndoableEditListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.undo.UndoManager;
 
@@ -46,11 +47,8 @@ public class Notepad_GUI extends JFrame {
         addToolbar();
 
         textArea = new JTextArea();
-        textArea.getDocument().addUndoableEditListener(new UndoableEditListener() {
-            @Override
-            public void undoableEditHappened(UndoableEditEvent e){
-                undoManager.addEdit(e.getEdit());
-            }
+        textArea.getDocument().addUndoableEditListener((UndoableEditEvent e) -> {
+            undoManager.addEdit(e.getEdit());
         });
         JScrollPane scrollPane = new JScrollPane(textArea);
         add(scrollPane, BorderLayout.CENTER);
@@ -76,50 +74,42 @@ public class Notepad_GUI extends JFrame {
         JMenu fileMenu = new JMenu("File");
 
         JMenuItem newMenuItem = new JMenuItem("New");
-        newMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setTitle("Notepad");
-                textArea.setText("getName()");
-
-                currentFile = null;
-            }
+        newMenuItem.addActionListener((ActionEvent e) -> {
+            setTitle("Notepad");
+            textArea.setText("getName()");
+            
+            currentFile = null;
         });
         fileMenu.add(newMenuItem);
 
         JMenuItem openMenuItem = new JMenuItem("Open");
-        openMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int result = fileChooser.showOpenDialog(Notepad_GUI.this);
-
-                if (result != JFileChooser.APPROVE_OPTION) {
-                    return;
+        openMenuItem.addActionListener((ActionEvent e) -> {
+            int result = fileChooser.showOpenDialog(Notepad_GUI.this);
+            
+            if (result != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+            
+            try {
+                newMenuItem.doClick();
+                
+                File selectedFile = fileChooser.getSelectedFile();
+                
+                currentFile = selectedFile;
+                
+                setTitle(selectedFile.getName());
+                
+                FileReader fileReader = new FileReader(selectedFile);
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                
+                StringBuilder fileText = new StringBuilder();
+                String readText;
+                while ((readText = bufferedReader.readLine()) != null) {
+                    fileText.append(readText).append("\n");
                 }
-
-                try {
-                    newMenuItem.doClick();
-
-                    File selectedFile = fileChooser.getSelectedFile();
-
-                    currentFile = selectedFile;
-
-                    setTitle(selectedFile.getName());
-
-                    FileReader fileReader = new FileReader(selectedFile);
-                    BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-                    StringBuilder fileText = new StringBuilder();
-                    String readText;
-                    while ((readText = bufferedReader.readLine()) != null) {
-                        fileText.append(readText + "\n");
-                    }
-
-                    textArea.setText(fileText.toString());
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
-
+                
+                textArea.setText(fileText.toString());
+            } catch (IOException e1) {
             }
         });
         fileMenu.add(openMenuItem);
