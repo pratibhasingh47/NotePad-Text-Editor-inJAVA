@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.ComponentOrientation;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -46,7 +47,8 @@ public class Notepad_GUI extends JFrame {
                 undoManager.addEdit(e.getEdit());
             }
         });
-        add(textArea, BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        add(scrollPane, BorderLayout.CENTER);
     }
 
     private void addToolbar() {
@@ -58,6 +60,7 @@ public class Notepad_GUI extends JFrame {
 
         menuBar.add(addFileMenu());
         menuBar.add(addEditMenu());
+        menuBar.add(addFormatMenu());
 
         add(toolBar, BorderLayout.NORTH);
     }
@@ -198,12 +201,84 @@ public class Notepad_GUI extends JFrame {
         JMenu editMenu = new JMenu("Edit");
 
         JMenuItem undoMenuItem = new JMenuItem("Undo");
+        undoMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if(undoManager.canUndo()){
+                    undoManager.undo();
+                }
+            }
+        });
         editMenu.add(undoMenuItem);
 
         JMenuItem redoMenuItem = new JMenuItem("Redo");
+        redoMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if(undoManager.canRedo()){
+                    undoManager.redo();
+                }
+            }
+        });
         editMenu.add(redoMenuItem);
 
         return editMenu;
+    }
+
+
+    private JMenu addFormatMenu(){
+        JMenu formatMenu = new JMenu("Format");
+
+        JCheckBoxMenuItem wordWraMenuItem = new JCheckBoxMenuItem("Word Wrap");
+        wordWraMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                boolean isChecked = wordWraMenuItem.getState();
+                if(isChecked){
+                    textArea.setLineWrap(true);
+                    textArea.setWrapStyleWord(true);
+                }
+                else{
+                    textArea.setLineWrap(false);
+                    textArea.setWrapStyleWord(false);
+                }
+            }
+        });
+        formatMenu.add(wordWraMenuItem);
+
+        JMenu aligntextMenu = new JMenu("Align Text");
+
+        JMenuItem alignTextLeftMenuItem = new JMenuItem("Left");
+        alignTextLeftMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                textArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        }
+        });
+        aligntextMenu.add(alignTextLeftMenuItem);
+
+        JMenuItem alignTextRightMenuItem = new JMenuItem("Right");
+        alignTextRightMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                textArea.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        }
+        });
+        aligntextMenu.add(alignTextRightMenuItem);
+
+        
+        formatMenu.add(aligntextMenu);
+
+        JMenuItem fontMenuItem = new JMenuItem("Font");
+        fontMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                
+            }
+        });
+        formatMenu.add(fontMenuItem);
+
+        return formatMenu;
     }
 
 }
