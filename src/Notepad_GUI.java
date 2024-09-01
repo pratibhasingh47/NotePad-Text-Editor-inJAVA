@@ -187,23 +187,17 @@ public class Notepad_GUI extends JFrame {
         JMenu editMenu = new JMenu("Edit");
 
         JMenuItem undoMenuItem = new JMenuItem("Undo");
-        undoMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                if(undoManager.canUndo()){
-                    undoManager.undo();
-                }
+        undoMenuItem.addActionListener((ActionEvent e) -> {
+            if(undoManager.canUndo()){
+                undoManager.undo();
             }
         });
         editMenu.add(undoMenuItem);
 
         JMenuItem redoMenuItem = new JMenuItem("Redo");
-        redoMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                if(undoManager.canRedo()){
-                    undoManager.redo();
-                }
+        redoMenuItem.addActionListener((ActionEvent e) -> {
+            if(undoManager.canRedo()){
+                undoManager.redo();
             }
         });
         editMenu.add(redoMenuItem);
