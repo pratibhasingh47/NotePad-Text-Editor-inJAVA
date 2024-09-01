@@ -210,18 +210,15 @@ public class Notepad_GUI extends JFrame {
         JMenu formatMenu = new JMenu("Format");
 
         JCheckBoxMenuItem wordWraMenuItem = new JCheckBoxMenuItem("Word Wrap");
-        wordWraMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                boolean isChecked = wordWraMenuItem.getState();
-                if(isChecked){
-                    textArea.setLineWrap(true);
-                    textArea.setWrapStyleWord(true);
-                }
-                else{
-                    textArea.setLineWrap(false);
-                    textArea.setWrapStyleWord(false);
-                }
+        wordWraMenuItem.addActionListener((ActionEvent e) -> {
+            boolean isChecked = wordWraMenuItem.getState();
+            if(isChecked){
+                textArea.setLineWrap(true);
+                textArea.setWrapStyleWord(true);
+            }
+            else{
+                textArea.setLineWrap(false);
+                textArea.setWrapStyleWord(false);
             }
         });
         formatMenu.add(wordWraMenuItem);
@@ -229,20 +226,14 @@ public class Notepad_GUI extends JFrame {
         JMenu aligntextMenu = new JMenu("Align Text");
 
         JMenuItem alignTextLeftMenuItem = new JMenuItem("Left");
-        alignTextLeftMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                textArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        }
+        alignTextLeftMenuItem.addActionListener((ActionEvent e) -> {
+            textArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         });
         aligntextMenu.add(alignTextLeftMenuItem);
 
         JMenuItem alignTextRightMenuItem = new JMenuItem("Right");
-        alignTextRightMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                textArea.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-        }
+        alignTextRightMenuItem.addActionListener((ActionEvent e) -> {
+            textArea.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         });
         aligntextMenu.add(alignTextRightMenuItem);
 
@@ -250,11 +241,8 @@ public class Notepad_GUI extends JFrame {
         formatMenu.add(aligntextMenu);
 
         JMenuItem fontMenuItem = new JMenuItem("Font");
-        fontMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                new FontMenu(Notepad_GUI.this).setVisible(true);
-            }
+        fontMenuItem.addActionListener((ActionEvent e) -> {
+            new FontMenu(Notepad_GUI.this).setVisible(true);
         });
         formatMenu.add(fontMenuItem);
 
