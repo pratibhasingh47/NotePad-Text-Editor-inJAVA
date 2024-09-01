@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -18,7 +19,7 @@ public class Notepad_GUI extends JFrame {
     private JFileChooser fileChooser;
 
     private JTextArea textArea;
-    
+
     public JTextArea getTextArea(){
         return textArea;
     }
@@ -65,6 +66,7 @@ public class Notepad_GUI extends JFrame {
         menuBar.add(addFileMenu());
         menuBar.add(addEditMenu());
         menuBar.add(addFormatMenu());
+        menuBar.add(addViewMenu());
 
         add(toolBar, BorderLayout.NORTH);
     }
@@ -285,4 +287,57 @@ public class Notepad_GUI extends JFrame {
         return formatMenu;
     }
 
+
+    private JMenu addViewMenu(){
+        JMenu viewMenu = new JMenu("View");
+
+        JMenu zoomMenu = new JMenu("Zoom");
+
+        JMenuItem zoomInMenu = new JMenuItem("Zoom in");
+        zoomInMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                Font currentFont = textArea.getFont();
+                textArea.setFont(new Font(
+                    currentFont.getName(),
+                    currentFont.getStyle(),
+                    currentFont.getSize() + 4
+                ));
+            }
+        });
+        zoomMenu.add(zoomInMenu);
+
+        JMenuItem zoomOutMenu = new JMenuItem("Zoom out");
+        zoomOutMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                Font currentFont = textArea.getFont();
+                textArea.setFont(new Font(
+                    currentFont.getName(),
+                    currentFont.getStyle(),
+                    currentFont.getSize() - 4
+                ));
+            }
+        });
+        zoomMenu.add(zoomOutMenu);
+
+        JMenuItem zoomRestoreMenuItem = new JMenuItem("Restore Default Zoom");
+        zoomRestoreMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                Font currentFont = textArea.getFont();
+                textArea.setFont(new Font(
+                    currentFont.getName(),
+                    currentFont.getStyle(),
+                    12
+                ));
+            }
+        });
+        zoomMenu.add(zoomRestoreMenuItem);
+
+
+        viewMenu.add(zoomMenu);
+
+        return viewMenu;
+    }
 }
