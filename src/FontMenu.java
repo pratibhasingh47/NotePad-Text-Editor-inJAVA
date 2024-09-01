@@ -50,23 +50,12 @@ public class FontMenu extends JDialog {
             String fontType = currentFontField.getText();
             
             int fontStyle;
-            switch (currentFontField.getText()) {
-                case "Plain":
-                    fontStyle = Font.PLAIN;
-                    break;
-                    
-                case "Bold":
-                    fontStyle = Font.BOLD;
-                    break;
-                    
-                case "Italic":
-                    fontStyle = Font.ITALIC;
-                    break;
-                    
-                default:
-                    fontStyle = Font.BOLD | Font.ITALIC;
-                    break;
-            }
+            fontStyle = switch (currentFontField.getText()) {
+                case "Plain" -> Font.PLAIN;
+                case "Bold" -> Font.BOLD;
+                case "Italic" -> Font.ITALIC;
+                default -> Font.BOLD | Font.ITALIC;
+            };
             int fontSize = Integer.parseInt(currentFontSizeField.getText());
             
             Color fontColor = currentColorBox.getBackground();
@@ -83,11 +72,8 @@ public class FontMenu extends JDialog {
 
         JButton cancelButton = new JButton("Cancel");
         cancelButton.setBounds(315,265,75,25);
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                FontMenu.this.dispose();
-            }
+        cancelButton.addActionListener((ActionEvent e) -> {
+            FontMenu.this.dispose();
         });
         add(cancelButton);
     }
