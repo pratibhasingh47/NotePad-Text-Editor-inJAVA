@@ -235,6 +235,8 @@ public class FontMenu extends JDialog {
     }
 
 
-    private add
+    private void addFontSizeChooser(){
+        
+    }
 
 }
