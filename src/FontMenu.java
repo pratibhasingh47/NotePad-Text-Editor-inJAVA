@@ -3,7 +3,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
@@ -143,23 +142,12 @@ public class FontMenu extends JDialog {
         int currentFontStyle = source.getTextArea().getFont().getStyle();
         String currentFontStyleText;
 
-        switch(currentFontStyle){
-            case Font.PLAIN:
-                currentFontStyleText = "Plain";
-                break;
-
-            case Font.BOLD:
-                currentFontStyleText = "Bold";
-                break;
-
-            case Font.ITALIC:
-                currentFontStyleText = "Italic";
-                break;
-
-            default:
-                currentFontStyleText = "Bold Italic";
-                break;
-        }
+        currentFontStyleText = switch (currentFontStyle) {
+            case Font.PLAIN -> "Plain";
+            case Font.BOLD -> "Bold";
+            case Font.ITALIC -> "Italic";
+            default -> "Bold Italic";
+        };
 
         currentFontStyleField = new JTextField(currentFontStyleText);
         currentFontStyleField.setPreferredSize(new Dimension(125,25));
@@ -338,14 +326,11 @@ public class FontMenu extends JDialog {
 
         JButton chooseColorButton = new JButton("Choose Color");
         chooseColorButton.setBounds(10,200,150,25);
-        chooseColorButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed (ActionEvent e){
-                Color c = JColorChooser.showDialog(null, "Select a Color", Color.BLACK);
-
-
-                currentColorBox.setBackground(c);
-            }
+        chooseColorButton.addActionListener((ActionEvent e) -> {
+            Color c = JColorChooser.showDialog(null, "Select a Color", Color.BLACK);
+            
+            
+            currentColorBox.setBackground(c);
         });
 
 
