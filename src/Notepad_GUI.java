@@ -18,6 +18,10 @@ public class Notepad_GUI extends JFrame {
     private JFileChooser fileChooser;
 
     private JTextArea textArea;
+    
+    public JTextArea getTextArea(){
+        return textArea;
+    }
     private File currentFile;
 
     private UndoManager undoManager;
@@ -273,7 +277,7 @@ public class Notepad_GUI extends JFrame {
         fontMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                
+                new FontMenu(Notepad_GUI.this).setVisible(true);
             }
         });
         formatMenu.add(fontMenuItem);
