@@ -7,7 +7,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import javax.swing.*;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.undo.UndoManager;
 
 public class Notepad_GUI extends JFrame {
 
@@ -15,6 +18,8 @@ public class Notepad_GUI extends JFrame {
 
     private JTextArea textArea;
     private File currentFile;
+
+    private UndoManager undoManager;
 
     public Notepad_GUI() {
         super("Notepad");
@@ -26,6 +31,8 @@ public class Notepad_GUI extends JFrame {
         fileChooser.setCurrentDirectory(new File("src/assets"));
         fileChooser.setFileFilter(new FileNameExtensionFilter("Text Files", "txt"));
 
+        undoManager = new UndoManager();
+
         addGuiComponents();
     }
 
@@ -33,6 +40,12 @@ public class Notepad_GUI extends JFrame {
         addToolbar();
 
         textArea = new JTextArea();
+        textArea.getDocument().addUndoableEditListener(new UndoableEditListener() {
+            @Override
+            public void undoableEditHappened(UndoableEditEvent e){
+                undoManager.addEdit(e.getEdit());
+            }
+        });
         add(textArea, BorderLayout.CENTER);
     }
 
@@ -44,6 +57,7 @@ public class Notepad_GUI extends JFrame {
         toolBar.add(menuBar);
 
         menuBar.add(addFileMenu());
+        menuBar.add(addEditMenu());
 
         add(toolBar, BorderLayout.NORTH);
     }
@@ -178,4 +192,18 @@ public class Notepad_GUI extends JFrame {
 
         return fileMenu;
     }
+
+
+    private JMenu addEditMenu(){
+        JMenu editMenu = new JMenu("Edit");
+
+        JMenuItem undoMenuItem = new JMenuItem("Undo");
+        editMenu.add(undoMenuItem);
+
+        JMenuItem redoMenuItem = new JMenuItem("Redo");
+        editMenu.add(redoMenuItem);
+
+        return editMenu;
+    }
+
 }
