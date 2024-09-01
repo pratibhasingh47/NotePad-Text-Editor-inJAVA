@@ -46,41 +46,38 @@ public class FontMenu extends JDialog {
 
         JButton applyButton = new JButton("Apply");
         applyButton.setBounds(230,265,75,25);
-        applyButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                String fontType = currentFontField.getText();
-
-                int fontStyle;
-                switch (currentFontField.getText()) {
-                    case "Plain":
-                        fontStyle = Font.PLAIN;
-                        break;
-
-                    case "Bold":
-                        fontStyle = Font.BOLD;
-                        break;
-
-                    case "Italic":
-                        fontStyle = Font.ITALIC;
-                        break;
-                
-                    default:
-                        fontStyle = Font.BOLD | Font.ITALIC;
-                        break;
-                }
-                int fontSize = Integer.parseInt(currentFontSizeField.getText());
-
-                Color fontColor = currentColorBox.getBackground();
-
-                Font newFont = new Font(fontType,fontStyle,fontSize);
-
-                source.getTextArea().setFont(newFont);
-
-                source.getTextArea().setForeground(fontColor);
-
-                FontMenu.this.dispose();
+        applyButton.addActionListener((ActionEvent e) -> {
+            String fontType = currentFontField.getText();
+            
+            int fontStyle;
+            switch (currentFontField.getText()) {
+                case "Plain":
+                    fontStyle = Font.PLAIN;
+                    break;
+                    
+                case "Bold":
+                    fontStyle = Font.BOLD;
+                    break;
+                    
+                case "Italic":
+                    fontStyle = Font.ITALIC;
+                    break;
+                    
+                default:
+                    fontStyle = Font.BOLD | Font.ITALIC;
+                    break;
             }
+            int fontSize = Integer.parseInt(currentFontSizeField.getText());
+            
+            Color fontColor = currentColorBox.getBackground();
+            
+            Font newFont = new Font(fontType,fontStyle,fontSize);
+            
+            source.getTextArea().setFont(newFont);
+            
+            source.getTextArea().setForeground(fontColor);
+            
+            FontMenu.this.dispose();
         });
         add(applyButton);
 
