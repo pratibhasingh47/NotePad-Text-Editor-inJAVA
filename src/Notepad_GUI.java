@@ -115,77 +115,67 @@ public class Notepad_GUI extends JFrame {
         fileMenu.add(openMenuItem);
 
         JMenuItem saveAsMenuItem = new JMenuItem("Save As");
-        saveAsMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int result = fileChooser.showSaveDialog(Notepad_GUI.this);
-                if (result != JFileChooser.APPROVE_OPTION) {
-                    return;
+        saveAsMenuItem.addActionListener((ActionEvent e) -> {
+            int result = fileChooser.showSaveDialog(Notepad_GUI.this);
+            if (result != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+            
+            try {
+                File selectedFile = fileChooser.getSelectedFile();
+                
+                String fileName = selectedFile.getName();
+                if (!fileName.substring(fileName.length() - 4).equalsIgnoreCase(".txt")) {
+                    selectedFile = new File(selectedFile.getAbsoluteFile() + ".txt");
+                    
+                    selectedFile.createNewFile();
+                    
+                    FileWriter fileWriter = new FileWriter(selectedFile);
+                    BufferedWriter bufferedWriter;
+                    bufferedWriter = new BufferedWriter(fileWriter);
+                    bufferedWriter.write(textArea.getText());
+                    
+                    bufferedWriter.close();
+                    fileWriter.close();
+                    
+                    setTitle(fileName);
+                    
+                    currentFile = selectedFile;
+                    
+                    JOptionPane.showMessageDialog(Notepad_GUI.this, "Saved File !");
                 }
-
-                try {
-                    File selectedFile = fileChooser.getSelectedFile();
-
-                    String fileName = selectedFile.getName();
-                    if (!fileName.substring(fileName.length() - 4).equalsIgnoreCase(".txt")) {
-                        selectedFile = new File(selectedFile.getAbsoluteFile() + ".txt");
-
-                        selectedFile.createNewFile();
-
-                        FileWriter fileWriter = new FileWriter(selectedFile);
-                        BufferedWriter bufferedWriter;
-                        bufferedWriter = new BufferedWriter(fileWriter);
-                        bufferedWriter.write(textArea.getText());
-
-                        bufferedWriter.close();
-                        fileWriter.close();
-
-                        setTitle(fileName);
-
-                        currentFile = selectedFile;
-
-                        JOptionPane.showMessageDialog(Notepad_GUI.this, "Saved File !");
-                    }
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
+            } catch (Exception e1) {
+                e1.printStackTrace();
             }
         });
         fileMenu.add(saveAsMenuItem);
 
         JMenuItem saveMenuItem = new JMenuItem("Save");
-        saveMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (currentFile == null) {
-                    saveAsMenuItem.doClick();
-                }
-
-                if(currentFile == null){
-                    return;
-                }
-
-                try {
-                    FileWriter fileWriter = new FileWriter(currentFile);
-                    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-                    bufferedWriter.write(textArea.getText());
-                    bufferedWriter.close();
-                    fileWriter.close();
-
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
+        saveMenuItem.addActionListener((ActionEvent e) -> {
+            if (currentFile == null) {
+                saveAsMenuItem.doClick();
+            }
+            
+            if(currentFile == null){
+                return;
+            }
+            
+            try {
+                FileWriter fileWriter = new FileWriter(currentFile);
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                bufferedWriter.write(textArea.getText());
+                bufferedWriter.close();
+                fileWriter.close();
+                
+            } catch (Exception e1) {
+                e1.printStackTrace();
             }
         });
         fileMenu.add(saveMenuItem);
 
         JMenuItem exitMenuItem = new JMenuItem("Exit");
-        exitMenuItem.addActionListener( new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Notepad_GUI.this.dispose();
-            }
-
+        exitMenuItem.addActionListener((ActionEvent e) -> {
+            Notepad_GUI.this.dispose();
         });
         fileMenu.add(exitMenuItem);
 
