@@ -5,6 +5,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,6 +34,7 @@ public class FontMenu extends JDialog {
         addFontChooser();
         addFontStyleChooser();
         addFontSizeChooser();
+        addFontColorChooser();
     }
 
     private void addFontChooser() {
@@ -236,7 +238,65 @@ public class FontMenu extends JDialog {
 
 
     private void addFontSizeChooser(){
+        JLabel fontSizeLabel = new JLabel("Font Size");
+        fontSizeLabel.setBounds(275,5,125,15);
+        add(fontSizeLabel);
+
+        JPanel fontSizePanel = new JPanel();
+        fontSizePanel.setBounds(275,15,125,160);
         
+        JTextField currentFontSizeField = new JTextField(
+            Integer.toString(source.getTextArea().getFont().getSize())
+        );
+        currentFontSizeField.setPreferredSize(new Dimension(125,25));
+        currentFontSizeField.setEditable(false);
+        fontSizePanel.add(currentFontSizeField);
+
+        JPanel listOfFontSizePanel = new JPanel();
+        listOfFontSizePanel.setLayout(new BoxLayout(listOfFontSizePanel, BoxLayout.Y_AXIS));
+        listOfFontSizePanel.setBackground(Color.WHITE);
+
+        for(int i = 8 ; i <=144; i+=2){
+            JLabel fontSizeValueLabel = new JLabel(Integer.toString(i));
+            fontSizeValueLabel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e){
+                    currentFontSizeField.setText(fontSizeValueLabel.getText());
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e){
+                    fontSizeValueLabel.setOpaque(true);
+                    fontSizeValueLabel.setBackground(Color.BLUE);
+                    fontSizeValueLabel.setForeground(Color.WHITE);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e){
+                    fontSizeValueLabel.setBackground(null);
+                    fontSizeValueLabel.setForeground(null);
+                }
+            });
+            listOfFontSizePanel.add(fontSizeValueLabel);
+        }
+
+        JScrollPane scrollPane = new JScrollPane(listOfFontSizePanel);
+        scrollPane.setPreferredSize(new Dimension(125,125));
+        fontSizePanel.add(scrollPane);
+
+        add(fontSizePanel);
+    }
+
+
+    private void addFontColorChooser(){
+        JPanel currentColorBox = new JPanel();
+        currentColorBox.setBounds(175,200,23,23);
+        currentColorBox.setBackground(source.getTextArea().getForeground());
+        add(currentColorBox);
+
+        JButton chooseColorButton = new JButton("Choose Color");
+        chooseColorButton.setBounds(10,200,150,25);
+        add(chooseColorButton);
     }
 
 }
