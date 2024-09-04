@@ -49,10 +49,11 @@ public class FontMenu extends JDialog {
             String fontType = currentFontField.getText();
             
             int fontStyle;
-            fontStyle = switch (currentFontField.getText()) {
+            fontStyle = switch (currentFontStyleField.getText()) {
                 case "Plain" -> Font.PLAIN;
                 case "Bold" -> Font.BOLD;
                 case "Italic" -> Font.ITALIC;
+                case "Bold Italic" -> Font.BOLD  | Font.ITALIC;
                 default -> Font.BOLD | Font.ITALIC;
             };
             int fontSize = Integer.parseInt(currentFontSizeField.getText());
@@ -146,7 +147,7 @@ public class FontMenu extends JDialog {
             case Font.PLAIN -> "Plain";
             case Font.BOLD -> "Bold";
             case Font.ITALIC -> "Italic";
-            default -> "Bold Italic";
+            default -> "Plain";
         };
 
         currentFontStyleField = new JTextField(currentFontStyleText);
