@@ -1,5 +1,7 @@
 # Notepad Text-Editor
+
 ### Introduction
+
 This is a Notepad Text Editor GUI created using Java and the Swing framework.
 
 <h2>Technologies Frameworks</h2>
